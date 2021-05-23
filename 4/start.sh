@@ -1,4 +1,11 @@
 #!/bin/bash
+# when creating a new ec2 instance it is possible to add user-data to the instance that will run after boot
+# the command to create the ec2 instance is:
+#
+# aws ec2 --profile choop --region us-east-1 run-instances --image-id ami-068663a3c619dd892 --key-name MyKey --security-groups EC2SecurityGroup --instance-type t2.micro --placement AvailabilityZone=us-east-1a --block-device-mappings DeviceName=/dev/sdh,Ebs={VolumeSize=8} --user-data file://start.sh
+#
+# Creating a security group and key pair need to take place only once (otherwise you'll get an error) therefore the commands to
+# create them are not included.
 sudo apt-get -y update
 sudo apt-get -y install wireguard-tools
 privatekey=$(wg genkey)
