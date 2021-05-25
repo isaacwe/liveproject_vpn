@@ -6,11 +6,11 @@
 #
 # Creating a security group and key pair need to take place only once (otherwise you'll get an error) therefore the commands to
 # create them are not included.
-sudo apt-get -y update
-sudo apt-get -y install wireguard-tools
+apt-get -y update
+apt-get -y install wireguard-tools
 privatekey=$(wg genkey)
 publickey=$(echo -n ${privatekey} | wg pubkey)
-sudo cat << EOF > /etc/wireguard/wg0.conf
+cat << EOF > /etc/wireguard/wg0.conf
 [Interface]
 Address = 10.0.0.1/24
 ListenPort = 51120
@@ -29,7 +29,9 @@ AllowedIPs = 10.0.0.3/32, 192.168.2.0/24
 PublicKey = dohkV/AfkeKzCRtPhj6dp26ZRF8y/Gmnkc7P+Me16i4=
 AllowedIPs = 10.0.0.4/32
 EOF
-sudo echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward
-sudo systemctl start wg-quick@wg0
-
-
+cat << EOF > /etc/sysctl.conf
+net.ipv4.ip_forward=1
+EOF
+echo 1 | tee /proc/sys/net/ipv4/ip_forward
+systemctl enable wg-quick@wg0
+reboot
