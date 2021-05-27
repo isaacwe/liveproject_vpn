@@ -35,3 +35,4 @@ EOF
 echo 1 | tee /proc/sys/net/ipv4/ip_forward
 systemctl enable wg-quick@wg0
 reboot
+
